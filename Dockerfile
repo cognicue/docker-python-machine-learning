@@ -6,22 +6,22 @@ RUN echo 'deb http://ftp.de.debian.org/debian jessie main' >> /etc/apt/sources.l
 RUN echo 'deb http://security.debian.org/debian-security jessie/updates main ' >> /etc/apt/sources.list
 RUN echo 'deb http://ftp.de.debian.org/debian sid main' >> /etc/apt/sources.list
 
-RUN apt-get -y install wget
+RUN apt-get update
 
-RUN apt-get -y install 		\
-	python3.8				\
-	python3.8-dev 			\
-	python3.8-distutils		\
-    build-essential 		\
-    libssl-dev 				\
-    libffi-dev 				\
-    libxml2-dev 			\
-    libxslt1-dev 			\
-    zlib1g-dev				\
-    libpq-dev				\
-    libjpeg-dev				\
-    bash 					\
-    wget
+RUN apt-get -y install          \
+        python3.8               \
+        python3.8-dev           \
+        python3.8-distutils     \
+        build-essential         \
+        libssl-dev              \
+        libffi-dev              \
+        libxml2-dev             \
+        libxslt1-dev            \
+        zlib1g-dev              \
+        libpq-dev               \
+        libjpeg-dev             \
+        bash                    \
+        wget
 
 
 RUN wget https://bootstrap.pypa.io/get-pip.py
@@ -47,17 +47,17 @@ RUN apt-get autoclean
 
 RUN echo 'alias python=python3.8' >> ~/.bashrc
 
-RUN pip install 		\
-	numpy 				\
-	scipy				\
-	scikit-learn		\
-	lxml 				\
-	uWSGI				\
-	pandas				\
-	pandas_schema		\
-	Pillow				\
-	praat-parselmouth	\
-	psycopg2
+RUN pip install             \
+        numpy               \
+        scipy               \
+        scikit-learn        \
+        lxml                \
+        uWSGI               \
+        pandas              \
+        pandas_schema       \
+        Pillow              \
+        praat-parselmouth   \
+        psycopg2
 
 
 CMD set PYTHONIOENCODING=utf-8
