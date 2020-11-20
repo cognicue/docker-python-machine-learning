@@ -1,14 +1,14 @@
-FROM debian:jessie-slim
+FROM debian:buster-slim
 
 MAINTAINER Fasih <fasih@email.com>
 
-RUN echo 'deb http://ftp.de.debian.org/debian jessie main' >> /etc/apt/sources.list
-RUN echo 'deb http://security.debian.org/debian-security jessie/updates main ' >> /etc/apt/sources.list
+RUN echo 'deb http://ftp.de.debian.org/debian buster main' >> /etc/apt/sources.list
+RUN echo 'deb http://security.debian.org/debian-security buster/updates main ' >> /etc/apt/sources.list
 RUN echo 'deb http://ftp.de.debian.org/debian sid main' >> /etc/apt/sources.list
 
 RUN apt-get update
 
-RUN apt-get -y install          \
+RUN apt-get -o APT::Immediate-Configure=0 --no-install-recommends -y install \
         python3.8               \
         python3.8-dev           \
         python3.8-distutils     \
@@ -21,10 +21,17 @@ RUN apt-get -y install          \
         libpq-dev               \
         libjpeg-dev             \
         bash                    \
-        wget
+        wget                    \
+        wkhtmltopdf             \
+        xauth                   \
+        xvfb
+
+RUN printf '#!/bin/bash\nxvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*' > /usr/bin/wkhtmltopdf.sh
+RUN chmod a+x /usr/bin/wkhtmltopdf.sh
+RUN ln -s /usr/bin/wkhtmltopdf.sh /usr/local/bin/wkhtmltopdf
 
 
-RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
 
 RUN python3.8 get-pip.py
 
@@ -42,8 +49,8 @@ RUN cd /usr/local/bin \
   && ln -s /usr/bin/pydoc3.8 pydoc \
   && ln -s /usr/bin/python3.8 python
 
-RUN apt-get autoremove
-RUN apt-get autoclean
+RUN apt-get -y autoremove
+RUN apt-get -y autoclean
 
 RUN echo 'alias python=python3.8' >> ~/.bashrc
 
@@ -55,6 +62,7 @@ RUN pip install             \
         uWSGI               \
         pandas              \
         pandas_schema       \
+        pdfkit              \
         Pillow              \
         praat-parselmouth   \
         psycopg2
