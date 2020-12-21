@@ -20,6 +20,7 @@ RUN apt-get -o APT::Immediate-Configure=0 --no-install-recommends -y install \
         zlib1g-dev              \
         libpq-dev               \
         libjpeg-dev             \
+        ffmpeg                  \
         bash                    \
         wget                    \
         wkhtmltopdf             \
@@ -65,7 +66,8 @@ RUN pip install             \
         pdfkit              \
         Pillow              \
         praat-parselmouth   \
-        psycopg2
+        psycopg2            \
+        ffmpeg-python
 
 
 CMD set PYTHONIOENCODING=utf-8
